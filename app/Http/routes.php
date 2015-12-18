@@ -50,3 +50,8 @@ Route::get('fight/{name}', 'FightingController@getFight');
 Route::get('/', function(){
 	return Redirect::to('login');
 });
+
+//-------------------------API ROUTES----------------------------
+Route::get('api/getChar', 'JsonController@getCharData');
+
+Route::put('api/updateChar', 'JsonController@updateCharData');

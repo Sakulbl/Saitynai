@@ -20,7 +20,7 @@ class InventionsController extends Controller {
 	public function index(){
 		// If energy is 0 and hunger is 100, redirect to sleeping
 		if (DB::table('characters')->where('username', Auth::user()->username)->pluck('energy') == 0 &&
-			DB::table('characters')->where('username', Auth::user()->username)->pluck('hunger') == 100)
+			DB::table('characters')->where('username', Auth::user()->username)->pluck('hunger') == 1)
 			return redirect('sleeping');
 	
 		// If energy is 0, redirect to sleeping
@@ -28,6 +28,7 @@ class InventionsController extends Controller {
 			return redirect('sleeping');
 			
 		// If hunger is 100, redirect to hunting
+		if (DB::table('characters')->where('username', Auth::user()->username)->pluck('hunger') == 1)
 			return redirect('hunting');
 	
 		$invention_progress = false;

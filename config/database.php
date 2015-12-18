@@ -54,7 +54,7 @@ return [
 
         'mysql' => [
             'driver'    => 'mysql',
-            'host'      => env('DB_HOST', 'localhost'),
+            'host'      => env('DB_HOST', '46.101.129.200'),
             'database'  => env('DB_DATABASE', 'mini_rpg'),
             'username'  => env('DB_USERNAME', 'lukaso'),
             'password'  => env('DB_PASSWORD', 'RVWiZ9UCLcb7Bq'),

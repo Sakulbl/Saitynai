@@ -10,14 +10,34 @@ use Auth;
 use DB;
 use App\User;
 use App\Character;
-use App\Http\Controllers\JsonController;
+use App\Http\Controllers\Controller;
 
-class OverviewController extends JsonController {	
-
-	// /overview
-	public function index(){
-		if(Auth::check())
-		{
+class JsonController extends Controller {	
+	public function getCharData()
+    {
+		try{
+			$statusCode = 200;
+		
+			$data = array(
+					'character' => DB::table('characters')->where('username', Auth::user()->username)->pluck('name'),
+					'level' => floor(DB::table('characters')->where('username', Auth::user()->username)->pluck('level')),
+					'energy' => (DB::table('characters')->where('username', Auth::user()->username)->pluck('energy'))*100,
+					'hunger' => (DB::table('characters')->where('username', Auth::user()->username)->pluck('hunger'))*100,
+					'intellect' => floor(DB::table('characters')->where('username', Auth::user()->username)->pluck('intellect')),
+					'strength' => floor(DB::table('characters')->where('username', Auth::user()->username)->pluck('strength'))
+				);
+		} catch (Exception $e){
+			$statusCode = 404;
+		} finally{
+			return response()->json($data, $statusCode);
+		}
+    }
+	
+	public function updateCharData()
+    {
+		try{
+			$statusCode = 200;
+		
 			// Update time when user was last seen on site and energy and hunger values			
 			$d1 = DB::table('characters')->where('username', Auth::user()->username)->pluck('last_updated');
 			$d2 = date('Y-m-d H:i:s');
@@ -31,14 +51,11 @@ class OverviewController extends JsonController {
 			if (DB::table('characters')->where('username', Auth::user()->username)->pluck('hunger') > 1)
 				DB::table('characters')->where('username', Auth::user()->username)->update(['hunger' => 1]);
 			DB::table('characters')->where('username', Auth::user()->username)->update(['last_updated' => date('Y-m-d H:i:s')]);
-			$JsonController = new JsonController();
-			$response = $JsonController->getCharData();
-			return view('overview')->with('data', $response->getData(true));
-		}else
-			return view('overview');
-	}
-	
-	public function store(){
-		
-	}
+			
+		} catch (Exception $e){
+			$statusCode = 404;
+		} finally{
+			return response()->json("{}", $statusCode);
+		}
+    }
 }

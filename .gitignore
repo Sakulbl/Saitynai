@@ -5,3 +5,4 @@ Homestead.json
 .env
 deployer.phar
 deploy.php
+tests/_output/*
